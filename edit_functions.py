@@ -19,7 +19,18 @@ def save_machine_file(tree, filename):
     :param filename: name of file
     :return: None
     """
-    tree.write(filename, doctype='<?xml version="1.0" encoding="utf-8"?>')
+    print("Saving machine to \"{}\"...".format(filename))
+    tree.write(filename, doctype='<?xml version="1.0" encoding="utf-8"?>', pretty_print=True)
+
+
+def set_machine_name(root, new_name):
+    """
+    Sets a Besiege machines's name to a new value
+    :param root: root of parsed xml, given by ElementTree tree.getroot()
+    :param new_name: new name for the machine
+    :return: None
+    """
+    root.find('Machine')['name'] = str(new_name)
 
 
 def round_transform_values(root, round_ndigits=3):
@@ -83,6 +94,7 @@ def clone_machine(tree, direction):
     :param direction: 'x', 'y', 'z'
     :return: new tree with cloned data
     """
+    # TODO: KESKEN
 
     tree_copy = copy.deepcopy(tree)
     root_copy = tree_copy.getroot()
@@ -128,3 +140,39 @@ def copy_block(block):
     new_block.attrib['guid'] = str(uuid.uuid4())
     # print(new_block.attrib)
     return new_block
+
+
+def create_block(block_id,
+                 position=(0, 0, 0),
+                 rotation=(0, 0, 0, 1),
+                 scale=(1, 1, 1)):
+    """
+    Creates a new Block xml element
+    :param block_id: block id (what block it is)
+    :param position: x, y, z coordinates
+    :param rotation: x, y, z, w coordinates
+    :param scale: x, y, z coordinates
+    :return: new Block xml element
+    """
+    # Everything must be strings as this is xml
+    block_id = str(block_id)
+    position_dict = {'x': str(position[0]), 'y': str(position[1]), 'z': str(position[2])}
+    rotation_dict = {'x': str(rotation[0]), 'y': str(rotation[1]), 'z': str(rotation[2]), 'w': str(rotation[3])}
+    scale_dict = {'x': str(scale[0]), 'y': str(scale[1]), 'z': str(scale[2])}
+
+    # Block element
+    new_block = ET.Element('Block', attrib={'id': block_id, 'guid': str(uuid.uuid4())})
+
+    # Transform element
+    new_block.append(ET.Element('Transform'))
+    transform_element = new_block.find('Transform')
+    transform_element.append(ET.Element('Position', attrib=position_dict))
+    transform_element.append(ET.Element('Rotation', attrib=rotation_dict))
+    transform_element.append(ET.Element('Scale', attrib=scale_dict))
+
+    # Data element
+    new_block.append(ET.Element('Data'))
+
+    return new_block
+
+
