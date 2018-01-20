@@ -1,0 +1,64 @@
+https://steamcommunity.com/sharedfiles/filedetails/?id=740906832
+
+1. starting block- 0
+2. small wooden block- 15
+3. wooden block- 1
+4. motor wheel- 2
+5. steering hinge- 28
+6. brace- 7
+7. wooden pole- 41
+8. hinge- 5
+9. swivel joint- 19
+10. ball joint- 44
+11. wooden panel- 10
+12. grip pad- 49
+13. pin block- 57
+14. camera block- 58
+15. steering (block)- 13
+16. unpowered wheel- 40
+17. large wheel- 46
+18. unpowered large wheel- 60
+19. small wheel- 50
+20. unpowered medium cog- 38
+21. powered medium cog- 39
+22. unpowered large cog- 51
+23. decoupler- 4
+24. contractable spring- 9
+25. suspension- 16
+26. slider- 42
+27. piston- 18
+28. spinning block- 22
+29. grabber- 27
+30. simple rope + winch- 45
+31. spike ball- 6
+32. metal blade- 3
+33. circular saw- 17
+34. drill- 48
+35. metal spike- 20
+36. cannon- 11
+37. shrapnel cannon- 53
+38. flame thrower- 21
+39. water cannon- 56
+40. small torch- 47
+41. bomb- 23
+42. remote grenade- 54
+43. explosive rocket- 59
+44. flaming ball- 31
+45. boulder- 36
+46. flying block- 14
+47. aerodynamic propeller- 26
+48. small aerodynamic propeller- 55
+49. wing- 25
+50. wnig panel- 34
+51. ballast- 35
+52. balloon- 43
+53. small (square) metal plate- 24
+54. rectangular metal plate- 32
+55. circular metal plate- 29
+56. plow- 33
+57. half pipe- 37
+58. holder- 30
+59. Log - 63
+60. Scaling - 12
+61. Repeating Crossbow - 61
+62. Vacuum - 62
