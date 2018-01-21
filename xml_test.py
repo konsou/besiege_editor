@@ -12,39 +12,7 @@ root = tree.getroot()
 
 blocks = root.find('Blocks')
 
-
-
-block_length = 1
-block_type = SMALL_WOODEN_BLOCK
-circle_steps = 360
-
-center_x = 1
-center_y = radius = (circle_steps * block_length) / (2 * math.pi)
-center_z = 1
-
-
-
-# blocks.append(create_block(STARTING_BLOCK, position=(center_x, center_y, center_z)))
-block_x = 1
-for i in range(circle_steps):
-    block_y = radius + angle_tools.calc_vy_from_angle(i, radius)
-    block_z = radius + angle_tools.calc_vx_from_angle(i, radius)
-    qua = Quaternion(axis=(1, 0, 0), degrees=90 - i)
-    # print("Step: {}, rotation amount: {}".format(i, x_rotation))
-    blocks.append(create_block(block_type, position=(block_x, block_y, block_z), rotation=(qua[1], qua[2], qua[3], qua[0])))
-
-
-
-# for x in range(5):
-#     for y in range(5):
-#         for z in range(5):
-#             blocks.append(create_block(64, position=(x, y, z)))
-
-# blocks.append(create_block(block_type, position=(0, 1, 1), rotation=(0, 0, 0, 0)))
-# blocks.append(create_block(block_type, position=(5, 1, 1), rotation=(1, 0, 0, 0)))
-# blocks.append(create_block(block_type, position=(10, 1, 1), rotation=(0, 0.7071068, 0, 0.7071068)))
-# blocks.append(create_block(block_type, position=(15, 1, 1), rotation=(0, -0.7071068, 0, 0.7071068)))
-
+make_circle(blocks, radius=5, pos=(0, 10, 0))
 save_machine_file(tree, BESIEGE_MACHINES_DIR + '!out.bsg')
 
 

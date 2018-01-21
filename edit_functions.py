@@ -1,6 +1,10 @@
 import lxml.etree as ET
+from pyquaternion import Quaternion
+import angle_tools
 import copy
 import uuid
+import math
+from blocks import *
 
 
 def load_machine_file(filename):
@@ -174,5 +178,40 @@ def create_block(block_id,
     new_block.append(ET.Element('Data'))
 
     return new_block
+
+
+def make_circle(blocks, radius, pos, block_id=SMALL_WOODEN_BLOCK, block_length=1):
+    """
+    Makes a circle of blocks, adds it to given xml Blocks element
+    :param blocks: Blocks xml element - adds new blocks under it
+    :param radius: radius of the circle
+    :param pos: position (x, y, x) of the centre of the circle
+    :param block: block id
+    :param block_length: optional - block length
+    :return:
+    """
+
+    circumference = 2 * math.pi * radius
+    circle_steps = int(circumference / block_length)
+
+    # print("Radius: {}".format(radius))
+    # print("Circumference: {}".format(circumference))
+    # print("Circle steps needed: {}".format(circle_steps))
+
+    center_x = pos[0]
+    # center_y = radius = (circle_steps * block_length) / (2 * math.pi)
+    center_y = pos[1]
+    center_z = pos[2]
+
+    # blocks.append(create_block(STARTING_BLOCK, position=(center_x, center_y, center_z)))
+    block_x = center_x
+    for i in range(circle_steps):
+        degrees = i / circle_steps * 360
+        block_y = radius + angle_tools.calc_vy_from_angle(degrees, radius)
+        block_z = radius + angle_tools.calc_vx_from_angle(degrees, radius)
+        qua = Quaternion(axis=(1, 0, 0), degrees=90 - degrees)
+        # print("Step: {}, rotation amount: {}".format(i, qua.degrees))
+        blocks.append(create_block(block_id, position=(block_x, block_y, block_z), rotation=(qua[1], qua[2], qua[3], qua[0])))
+
 
 
