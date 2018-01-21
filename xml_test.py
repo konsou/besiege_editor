@@ -1,5 +1,6 @@
 from edit_functions import *
 from blocks import *
+from pyquaternion import Quaternion
 import math
 import angle_tools
 
@@ -11,6 +12,8 @@ root = tree.getroot()
 
 blocks = root.find('Blocks')
 
+
+
 block_length = 1
 block_type = SMALL_WOODEN_BLOCK
 circle_steps = 360
@@ -20,42 +23,15 @@ center_y = radius = (circle_steps * block_length) / (2 * math.pi)
 center_z = 1
 
 
-def get_rotation_amount(rotation_degrees):
-    while rotation_degrees >= 180:
-        rotation_degrees -= 180
-    while rotation_degrees < 0:
-        rotation_degrees += 180
-
-    # 0 -> 0
-    # 90 -> 1
-    # 180 -> 0
-    # 360 -> 1
-
-    ret_val = (rotation_degrees / 180 * 2)
-
-    while ret_val > 1:
-        ret_val -= 1
-    while ret_val < -1:
-        ret_val += 1
-    return ret_val
 
 # blocks.append(create_block(STARTING_BLOCK, position=(center_x, center_y, center_z)))
 block_x = 1
 for i in range(circle_steps):
     block_y = radius + angle_tools.calc_vy_from_angle(i, radius)
     block_z = radius + angle_tools.calc_vx_from_angle(i, radius)
-    if i == 0:
-        x_rotation = 1
-    elif i == 90:
-        x_rotation = 0
-    elif i == 180:
-        x_rotation = 1
-    elif i == 270:
-        x_rotation = 0
-    else:
-        x_rotation = 1 - (i / 360 * 6)
-    print("Step: {}, rotation amount: {}".format(i, x_rotation))
-    blocks.append(create_block(block_type, position=(block_x, block_y, block_z), rotation=(x_rotation, 0, 0, 1)))
+    qua = Quaternion(axis=(1, 0, 0), degrees=90 - i)
+    # print("Step: {}, rotation amount: {}".format(i, x_rotation))
+    blocks.append(create_block(block_type, position=(block_x, block_y, block_z), rotation=(qua[1], qua[2], qua[3], qua[0])))
 
 
 
