@@ -1,5 +1,9 @@
 https://steamcommunity.com/sharedfiles/filedetails/?id=740906832
 
+Format:
+(useless number). (name)- (block id)
+Block id is what you need
+
 1. starting block- 0
 2. small wooden block- 15
 3. wooden block- 1

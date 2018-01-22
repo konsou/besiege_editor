@@ -8,6 +8,8 @@ import math
 from blocks import *
 from constants import *
 
+""" Contains functions that help edit/create Besiege xml Machine files """
+
 
 def load_machine_file(filename):
     """

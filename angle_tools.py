@@ -5,9 +5,7 @@ from pygame.locals import *
 from colors import *
 
 """ 
-TOIMII! 
-
-Päivitys 25.6.: toimii vielä paremmin
+Copypasted from another project - most of this file is not needed and actually meant for Pygame. 
 
 """
 
