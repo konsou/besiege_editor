@@ -176,8 +176,8 @@ def create_block(block_id,
     new_block = ET.Element('Block', attrib={'id': block_id, 'guid': str(uuid.uuid4())})
 
     # Transform element
-    new_block.append(ET.Element('Transform'))
-    transform_element = new_block.find('Transform')
+    transform_element = ET.Element('Transform')
+    new_block.append(transform_element)
     transform_element.append(ET.Element('Position', attrib=position_dict))
     transform_element.append(ET.Element('Rotation', attrib=rotation_dict))
     transform_element.append(ET.Element('Scale', attrib=scale_dict))
@@ -188,16 +188,17 @@ def create_block(block_id,
     return new_block
 
 
-def make_circle(blocks, radius, pos, block_id=SMALL_WOODEN_BLOCK, block_length=1):
+def make_circle(tree, radius, pos, block_id=SMALL_WOODEN_BLOCK, block_length=1):
     """
     Makes a circle of blocks, adds it to given xml Blocks element
-    :param blocks: Blocks xml element - adds new blocks under it
+    :param tree: ElementTree parsed xml object
     :param radius: radius of the circle
-    :param pos: position (x, y, x) of the centre of the circle
-    :param block: block id
-    :param block_length: optional - block length
+    :param pos: position (x, y, z) of the centre of the circle
+    :param block_id: optional - block id (defaults to small wooden block)
+    :param block_length: optional - block length (default 1 - need to change manually if needed)
     :return:
     """
+    blocks = tree.getroot().find('Blocks')
 
     circumference = 2 * math.pi * radius
     circle_steps = int(circumference / block_length)
