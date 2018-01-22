@@ -1,10 +1,12 @@
 import lxml.etree as ET
 from pyquaternion import Quaternion
+import os.path
 import angle_tools
 import copy
 import uuid
 import math
 from blocks import *
+from constants import *
 
 
 def load_machine_file(filename):
@@ -16,25 +18,29 @@ def load_machine_file(filename):
     return ET.parse(filename)
 
 
-def save_machine_file(tree, filename):
+def save_machine_file(tree, filename=""):
     """
-    Saves an ElementTree object to a Besiege xml machine file
-    :param tree: ElementTree object
-    :param filename: name of file
+    Saves an ElementTree object to a Besiege xml machine file, adding doctype declaration.
+    :param tree: ElementTree parsed xml object
+    :param filename: name of file. If empty we use BESIEGE_MACHINES_DIR and machine name from xml.
     :return: None
     """
+    if filename == "":
+        filename = os.path.join(BESIEGE_MACHINES_DIR, tree.getroot().attrib['name'].lower() + ".bsg")
     print("Saving machine to \"{}\"...".format(filename))
     tree.write(filename, doctype='<?xml version="1.0" encoding="utf-8"?>', pretty_print=True)
 
 
-def set_machine_name(root, new_name):
+def set_machine_name(tree, new_name):
     """
     Sets a Besiege machines's name to a new value
-    :param root: root of parsed xml, given by ElementTree tree.getroot()
+    :param tree: ElementTree parsed xml object
     :param new_name: new name for the machine
     :return: None
     """
-    root.find('Machine')['name'] = str(new_name)
+    # root = Machine tag
+    root = tree.getroot()
+    root.attrib['name'] = str(new_name)
 
 
 def round_transform_values(root, round_ndigits=3):
