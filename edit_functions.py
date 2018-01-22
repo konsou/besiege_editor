@@ -43,26 +43,28 @@ def set_machine_name(tree, new_name):
     root.attrib['name'] = str(new_name)
 
 
-def round_transform_values(root, round_ndigits=3):
+def round_transform_values(tree, round_ndigits=3):
     """
     Rounds all Transform values in a Besiege machine file (Position, Rotation, Scale)
-    :param root: root of parsed xml, given by ElementTree tree.getroot()
+    :param tree: ElementTree parsed xml object
     :param round_ndigits: number of digits to round to
     :return: None
     """
+    root = tree.getroot()
     for block in root.find('Blocks').findall('Block'):
         for transform_attrib in block.find('Transform').getchildren():
             for attrib_key in transform_attrib.attrib:
                 transform_attrib.attrib[attrib_key] = str(round(float(transform_attrib.attrib[attrib_key]), round_ndigits))
 
 
-def get_size_in_direction(root, direction):
+def get_size_in_direction(tree, direction):
     """
     Calculates the size of a machine in given direction
-    :param root: root of parsed xml, given by ElementTree tree.getroot()
+    :param tree: ElementTree parsed xml object
     :param direction: 'x', 'y' or 'z'
     :return: size of machine in given direction
     """
+    root = tree.getroot()
     direction = direction.lower()
 
     max_value = get_extreme_value(root, 'max', direction)
@@ -72,14 +74,15 @@ def get_size_in_direction(root, direction):
     return max_value - min_value
 
 
-def get_extreme_value(root, minmax, direction):
+def get_extreme_value(tree, minmax, direction):
     """
     Finds the extreme value of a machine in given direction
-    :param root: root of parsed xml, given by ElementTree tree.getroot()
+    :param tree: ElementTree parsed xml object
     :param minmax: 'min' or 'max' - to select if we want the minimum or the maximum of the value
     :param direction: 'x', 'y' or 'z'
     :return: selected extreme
     """
+    root = tree.getroot()
     direction = direction.lower()
     min_value = 99999999999
     max_value = -99999999999
@@ -128,6 +131,7 @@ def move_block(block, direction, amount):
     :param direction: 'x', 'y', 'z'
     :param amount: numeric value
     :return: Block xml element
+    TODO: Change signature to move_block(block, (amount_x, amount_y, amount_z))
     """
     direction = direction.lower()
     print('Moving block with guid {}'.format(block.attrib['guid']))
@@ -146,9 +150,7 @@ def copy_block(block):
     """
 
     new_block = copy.deepcopy(block)
-    # print(new_block.attrib)
     new_block.attrib['guid'] = str(uuid.uuid4())
-    # print(new_block.attrib)
     return new_block
 
 
@@ -160,7 +162,7 @@ def create_block(block_id,
     Creates a new Block xml element
     :param block_id: block id (what block it is)
     :param position: x, y, z coordinates
-    :param rotation: x, y, z, w coordinates
+    :param rotation: x, y, z, w coordinates (quaternion)
     :param scale: x, y, z coordinates
     :return: new Block xml element
     """
