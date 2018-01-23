@@ -1,4 +1,7 @@
 """ Block id codes here """
 STARTING_BLOCK = 0
+DECOUPLER = 4
+FLYING_BLOCK = 14
 SMALL_WOODEN_BLOCK = 15
+PISTON = 18
 LOG = 63

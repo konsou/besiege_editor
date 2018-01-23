@@ -69,8 +69,8 @@ def get_size_in_direction(tree, direction):
     root = tree.getroot()
     direction = direction.lower()
 
-    max_value = get_extreme_value(root, 'max', direction)
-    min_value = get_extreme_value(root, 'min', direction)
+    max_value = get_extreme_value(tree, 'max', direction)
+    min_value = get_extreme_value(tree, 'min', direction)
 
     print("Max: {} - min: {}".format(max_value, min_value))
     return max_value - min_value
@@ -102,28 +102,33 @@ def get_extreme_value(tree, minmax, direction):
         return max_value
 
 
-def clone_machine(tree, direction):
+def clone_machine(tree, direction, offset=0):
     """
     Clones the machine in given direction
     :param tree: ElementTree tree
     :param direction: 'x', 'y', 'z'
+    :param offset: this amount will be added to the 'direction' coordinate of every copied block
     :return: new tree with cloned data
+    TODO: in-place?
     """
-    # TODO: KESKEN
-
     tree_copy = copy.deepcopy(tree)
     root_copy = tree_copy.getroot()
+    blocks_copy = root_copy.find('Blocks')
+    root = tree.getroot()
 
-    # max_value = get_extreme_value(root, 'max', direction)
-    machine_size = get_size_in_direction(root, direction)
+    max_value = get_extreme_value(tree, 'max', direction)
+    machine_size = get_size_in_direction(tree, direction)
 
-    index_counter = len(root.find('Blocks'))
+    offset = max_value + machine_size + offset
+
+    # index_counter = len(root.find('Blocks'))
 
     for block in root.find('Blocks').findall('Block'):
-        root_copy.find('Blocks').insert(index_counter, block)
-        index_counter += 1
+        copied_block = copy_block(block)
+        move_block(copied_block, direction, offset)
+        blocks_copy.append(copied_block)
 
-    return root_copy
+    return tree_copy
 
 
 def move_block(block, direction, amount):
