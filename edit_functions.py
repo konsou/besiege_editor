@@ -102,7 +102,7 @@ def get_extreme_value(tree, minmax, direction):
         return max_value
 
 
-def clone_machine(tree, direction, offset=0):
+def clone_machine(tree, direction, offset=1):
     """
     Clones the machine in given direction
     :param tree: ElementTree tree
@@ -119,7 +119,7 @@ def clone_machine(tree, direction, offset=0):
     max_value = get_extreme_value(tree, 'max', direction)
     machine_size = get_size_in_direction(tree, direction)
 
-    offset = max_value + machine_size + offset
+    offset = machine_size + offset
 
     # index_counter = len(root.find('Blocks'))
 
@@ -193,6 +193,15 @@ def create_block(block_id,
     new_block.append(ET.Element('Data'))
 
     return new_block
+
+
+def get_machine_blocks(tree):
+    """
+    Selects all Block elements of a machine
+    :param tree: ElementTree parsed xml object
+    :return: list of all Block elements in given tree
+    """
+    return tree.getroot().find('Blocks').findall('Block')
 
 
 def make_circle(tree, radius, pos, block_id=SMALL_WOODEN_BLOCK, block_length=1):
