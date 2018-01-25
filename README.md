@@ -1,5 +1,6 @@
 # besiege_editor
 ## Konso's Besiege machine file editor
+### Very much a work in progress! Everything may change without notice, project might never be completed!
 
 An attempt to build and edit Besiege machine files
 
