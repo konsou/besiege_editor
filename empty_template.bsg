@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Empty Besiege Machine template file
+
+DO NOT ATTEMPT TO LOAD THIS EMPTY TEMPLATE INTO BESIEGE
+ - WILL BUG YOUR GAME SO YOU CAN'T LOAD *ANY* MACHINES
+ AND REQUIRES GAME RESTART TO FIX
+-->
 <!--Besiege machine save file.-->
 <Machine version="1" bsgVersion="1.3" name="">
     <!--The machine's position and rotation.-->
