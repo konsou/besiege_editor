@@ -76,12 +76,13 @@ def get_size_in_direction(tree, direction):
     return max_value - min_value
 
 
-def get_extreme_value(tree, minmax, direction):
+def get_extreme_value(tree, minmax, direction, ignore_braces=True):
     """
-    Finds the extreme value of a machine in given direction
+    Finds the extreme value of a machine in given direction. Ignores braces by default.
     :param tree: ElementTree parsed xml object
     :param minmax: 'min' or 'max' - to select if we want the minimum or the maximum of the value
     :param direction: 'x', 'y' or 'z'
+    :param ignore_braces: whether to ignore braces (True/False)
     :return: selected extreme
     """
     root = tree.getroot()
@@ -90,6 +91,10 @@ def get_extreme_value(tree, minmax, direction):
     max_value = -99999999999
 
     for block in root.find('Blocks').findall('Block'):
+        # Ignore braces if set
+        if ignore_braces and int(block.attrib['id']) == BRACE:
+            continue
+
         value = float(block.find('Transform').find('Position').attrib[direction])
         if minmax == 'min':
             min_value = min(value, min_value)
