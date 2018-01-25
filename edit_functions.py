@@ -107,12 +107,13 @@ def get_extreme_value(tree, minmax, direction, ignore_braces=True):
         return max_value
 
 
-def clone_machine(tree, direction, offset=1):
+def clone_machine(tree, direction, offset=1, times=1):
     """
     Clones the machine in given direction
     :param tree: ElementTree tree
     :param direction: 'x', 'y', 'z'
     :param offset: this amount will be added to the 'direction' coordinate of every copied block
+    :param times: how many times to clone the original
     :return: new tree with cloned data
     TODO: in-place?
     """
@@ -121,17 +122,19 @@ def clone_machine(tree, direction, offset=1):
     blocks_copy = root_copy.find('Blocks')
     root = tree.getroot()
 
-    max_value = get_extreme_value(tree, 'max', direction)
     machine_size = get_size_in_direction(tree, direction)
+    # max_value = get_extreme_value(tree, 'max', direction)
+    for i in range(times):
 
-    offset = machine_size + offset
+        current_offset = (machine_size + offset) * (i + 1)
+        # print("i: {}, current_offset: {}".format(i, current_offset))
 
-    # index_counter = len(root.find('Blocks'))
+        # index_counter = len(root.find('Blocks'))
 
-    for block in root.find('Blocks').findall('Block'):
-        copied_block = copy_block(block)
-        move_block(copied_block, direction, offset)
-        blocks_copy.append(copied_block)
+        for block in root.find('Blocks').findall('Block'):
+            copied_block = copy_block(block)
+            move_block(copied_block, direction, current_offset)
+            blocks_copy.append(copied_block)
 
     return tree_copy
 
@@ -146,7 +149,7 @@ def move_block(block, direction, amount):
     TODO: Change signature to move_block(block, (amount_x, amount_y, amount_z))
     """
     direction = direction.lower()
-    print('Moving block with guid {}'.format(block.attrib['guid']))
+    # print('Moving block with guid {}'.format(block.attrib['guid']))
     attrib_to_change = float(block.find('Transform').find('Position').attrib[direction])
     attrib_to_change += amount
     block.find('Transform').find('Position').attrib[direction] = str(attrib_to_change)
