@@ -45,6 +45,21 @@ def set_machine_name(tree, new_name):
     root.attrib['name'] = str(new_name)
 
 
+def set_block_rotation(block, quat):
+    """
+    Sets rotation for the given block
+    :param block: xml Block object
+    :param quat: a pyquaternion Quaternion containing the new rotation data
+    :return: None
+    """
+    rotation_element = block.find('Transform').find('Rotation')
+    # Quaternion elements are in order w, x, y, z
+    rotation_element.attrib['w'] = str(quat[0])
+    rotation_element.attrib['x'] = str(quat[1])
+    rotation_element.attrib['y'] = str(quat[2])
+    rotation_element.attrib['z'] = str(quat[3])
+
+
 def round_transform_values(tree, round_ndigits=3):
     """
     Rounds all Transform values in a Besiege machine file (Position, Rotation, Scale)
