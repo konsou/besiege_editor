@@ -220,11 +220,11 @@ def create_block(block_id,
 
 def get_machine_blocks(tree):
     """
-    Selects all Block elements of a machine
+    Selects the Blocks elements of a machine that has all the Block elements inside it
     :param tree: ElementTree parsed xml object
-    :return: list of all Block elements in given tree
+    :return: Blocks xml element
     """
-    return tree.getroot().find('Blocks').findall('Block')
+    return tree.getroot().find('Blocks')  # .findall('Block')
 
 
 def make_circle(tree, radius, pos, block_id=SMALL_WOODEN_BLOCK, block_length=1):
