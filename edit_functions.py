@@ -122,13 +122,14 @@ def get_extreme_value(tree, minmax, direction, ignore_braces=True):
         return max_value
 
 
-def clone_machine(tree, direction, offset=1, times=1):
+def clone_machine(tree, direction, offset=1, times=1, ignore_blocks: tuple[int] = ()):
     """
     Clones the machine in given direction
     :param tree: ElementTree tree
     :param direction: 'x', 'y', 'z'
     :param offset: this amount will be added to the 'direction' coordinate of every copied block
     :param times: how many times to clone the original
+    :param ignore_blocks: a tuple of block codes to ignore when cloning
     :return: new tree with cloned data
     TODO: in-place?
     """
@@ -147,6 +148,8 @@ def clone_machine(tree, direction, offset=1, times=1):
         # index_counter = len(root.find('Blocks'))
 
         for block in root.find('Blocks').findall('Block'):
+            if int(block.attrib['id']) in ignore_blocks:
+                continue
             copied_block = copy_block(block)
             move_block(copied_block, direction, current_offset)
             blocks_copy.append(copied_block)
@@ -262,4 +265,9 @@ def make_circle(tree, radius, pos, block_id=SMALL_WOODEN_BLOCK, block_length=1):
         blocks.append(create_block(block_id, position=(block_x, block_y, block_z), rotation=(qua[1], qua[2], qua[3], qua[0])))
 
 
-
+if __name__ == '__main__':
+    machine = load_machine_file(f'{BESIEGE_MACHINES_DIR}spikewall-1-story.bsg')
+    print(machine)
+    # make_circle(tree=machine, radius=20, pos=(0, 0, 0))
+    machine = clone_machine(machine, direction='y', times=9, ignore_blocks=(MOTOR_WHEEL,))
+    save_machine_file(machine, filename=f'{BESIEGE_MACHINES_DIR}spikewall.bsg')
